@@ -1,6 +1,7 @@
 import { Bell, Search } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ColorThemeSelector } from "@/components/ColorThemeSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -24,6 +25,7 @@ export function Header() {
           <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="h-5 w-5" />
           </Button>
+          <ColorThemeSelector />
           <ThemeToggle />
         </div>
       </div>

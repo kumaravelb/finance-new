@@ -1,5 +1,19 @@
-import { LayoutDashboard, TrendingUp, CreditCard, Settings, Wallet } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  TrendingUp, 
+  CreditCard, 
+  Settings, 
+  Wallet,
+  ChevronDown,
+  PieChart,
+  BarChart3,
+  LineChart,
+  ArrowUpDown,
+  ArrowDownUp,
+  History
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,19 +23,46 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const menuItems = [
   { title: "Overview", url: "/", icon: LayoutDashboard },
-  { title: "Analytics", url: "/analytics", icon: TrendingUp },
-  { title: "Transactions", url: "/transactions", icon: CreditCard },
+  { 
+    title: "Analytics", 
+    icon: TrendingUp,
+    subItems: [
+      { title: "Portfolio Growth", url: "/analytics", icon: PieChart },
+      { title: "Charts", url: "/analytics", icon: BarChart3 },
+      { title: "Trends", url: "/analytics", icon: LineChart },
+    ]
+  },
+  { 
+    title: "Transactions", 
+    icon: CreditCard,
+    subItems: [
+      { title: "All Transactions", url: "/transactions", icon: History },
+      { title: "Income", url: "/transactions", icon: ArrowDownUp },
+      { title: "Expenses", url: "/transactions", icon: ArrowUpDown },
+    ]
+  },
   { title: "Wallet", url: "/wallet", icon: Wallet },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
   const { open } = useSidebar();
+  const [openMenus, setOpenMenus] = useState<string[]>(["Analytics"]);
+
+  const toggleMenu = (title: string) => {
+    setOpenMenus((prev) =>
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+    );
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -32,24 +73,82 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === "/"}
-                      className={({ isActive }) =>
-                        isActive
-                          ? "bg-sidebar-accent text-sidebar-primary font-medium"
-                          : "hover:bg-sidebar-accent/50"
-                      }
+              {menuItems.map((item) => {
+                const hasSubItems = "subItems" in item && item.subItems;
+                const isMenuOpen = openMenus.includes(item.title);
+
+                if (hasSubItems) {
+                  return (
+                    <Collapsible
+                      key={item.title}
+                      open={isMenuOpen && open}
+                      onOpenChange={() => toggleMenu(item.title)}
+                      className="group/collapsible"
                     >
-                      <item.icon className="h-4 w-4" />
-                      {open && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton
+                            className="hover:bg-sidebar-accent/50"
+                            tooltip={item.title}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            {open && (
+                              <>
+                                <span>{item.title}</span>
+                                <ChevronDown
+                                  className={`ml-auto h-4 w-4 transition-transform ${
+                                    isMenuOpen ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </>
+                            )}
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {item.subItems.map((subItem) => (
+                              <SidebarMenuSubItem key={subItem.title}>
+                                <SidebarMenuSubButton asChild>
+                                  <NavLink
+                                    to={subItem.url}
+                                    className={({ isActive }) =>
+                                      isActive
+                                        ? "bg-sidebar-accent text-sidebar-primary font-medium"
+                                        : ""
+                                    }
+                                  >
+                                    <subItem.icon className="h-4 w-4" />
+                                    <span>{subItem.title}</span>
+                                  </NavLink>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </SidebarMenuItem>
+                    </Collapsible>
+                  );
+                }
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild tooltip={item.title}>
+                      <NavLink
+                        to={item.url}
+                        end={item.url === "/"}
+                        className={({ isActive }) =>
+                          isActive
+                            ? "bg-sidebar-accent text-sidebar-primary font-medium"
+                            : "hover:bg-sidebar-accent/50"
+                        }
+                      >
+                        <item.icon className="h-4 w-4" />
+                        {open && <span>{item.title}</span>}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

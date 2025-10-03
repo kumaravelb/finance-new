@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import logoFull from "@/assets/logo-full.png";
+import logoIcon from "@/assets/logo-icon.png";
 import {
   Sidebar,
   SidebarContent,
@@ -68,6 +70,13 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
+          <div className="px-3 py-4 mb-2">
+            {open ? (
+              <img src={logoFull} alt="ANOUD TECHNOLOGIES" className="w-full h-auto" />
+            ) : (
+              <img src={logoIcon} alt="ANOUD" className="w-8 h-8 mx-auto" />
+            )}
+          </div>
           <SidebarGroupLabel className="text-sm font-semibold text-primary">
             Finance Dashboard
           </SidebarGroupLabel>

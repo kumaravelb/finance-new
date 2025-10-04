@@ -17,6 +17,9 @@ import AccountMaster from "./pages/master/AccountMaster";
 import ProductMaster from "./pages/master/ProductMaster";
 import VendorMaster from "./pages/master/VendorMaster";
 import NotFound from "./pages/NotFound";
+import WayToStart from "./pages/setup/WayToStart";
+import CompanySetup from "./pages/setup/CompanySetup";
+import CompanyMaster from "./pages/setup/CompanyMaster";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +36,11 @@ const App = () => (
               <Header />
               <main className="flex-1 p-6">
                 <Routes>
-                  <Route path="/" element={<Overview />} />
+                  <Route path="/" element={<WayToStart />} />
+                  <Route path="/setup" element={<WayToStart />} />
+                  <Route path="/setup/company" element={<CompanySetup />} />
+                  <Route path="/setup/company/master" element={<CompanyMaster />} />
+                  <Route path="/overview" element={<Overview />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="/transactions" element={<Transactions />} />
                   <Route path="/master/customers" element={<CustomerMaster />} />

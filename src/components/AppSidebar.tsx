@@ -38,9 +38,10 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const menuItems = [
-  { title: "Overview", url: "/", icon: LayoutDashboard },
+  { title: "Way to Start", url: "/setup", icon: LayoutDashboard },
+  { title: "Overview", url: "/overview", icon: LayoutDashboard },
   { 
-    title: "Analytics", 
+    title: "Analytics",
     icon: TrendingUp,
     subItems: [
       { title: "Portfolio Growth", url: "/analytics", icon: PieChart },

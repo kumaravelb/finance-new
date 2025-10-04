@@ -10,7 +10,12 @@ import {
   LineChart,
   ArrowUpDown,
   ArrowDownUp,
-  History
+  History,
+  Database,
+  Users,
+  Building2,
+  Package,
+  Truck
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -50,6 +55,16 @@ const menuItems = [
       { title: "All Transactions", url: "/transactions", icon: History },
       { title: "Income", url: "/transactions", icon: ArrowDownUp },
       { title: "Expenses", url: "/transactions", icon: ArrowUpDown },
+    ]
+  },
+  { 
+    title: "Master Setup", 
+    icon: Database,
+    subItems: [
+      { title: "Customer Master", url: "/master/customers", icon: Users },
+      { title: "Account Master", url: "/master/accounts", icon: Building2 },
+      { title: "Product Master", url: "/master/products", icon: Package },
+      { title: "Vendor Master", url: "/master/vendors", icon: Truck },
     ]
   },
   { title: "Wallet", url: "/wallet", icon: Wallet },

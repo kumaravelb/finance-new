@@ -12,6 +12,10 @@ import Analytics from "./pages/Analytics";
 import Transactions from "./pages/Transactions";
 import Wallet from "./pages/Wallet";
 import Settings from "./pages/Settings";
+import CustomerMaster from "./pages/master/CustomerMaster";
+import AccountMaster from "./pages/master/AccountMaster";
+import ProductMaster from "./pages/master/ProductMaster";
+import VendorMaster from "./pages/master/VendorMaster";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +36,10 @@ const App = () => (
                   <Route path="/" element={<Overview />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="/transactions" element={<Transactions />} />
+                  <Route path="/master/customers" element={<CustomerMaster />} />
+                  <Route path="/master/accounts" element={<AccountMaster />} />
+                  <Route path="/master/products" element={<ProductMaster />} />
+                  <Route path="/master/vendors" element={<VendorMaster />} />
                   <Route path="/wallet" element={<Wallet />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<NotFound />} />

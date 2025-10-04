@@ -20,6 +20,10 @@ import NotFound from "./pages/NotFound";
 import WayToStart from "./pages/setup/WayToStart";
 import CompanySetup from "./pages/setup/CompanySetup";
 import CompanyMaster from "./pages/setup/CompanyMaster";
+import AccountPeriodMaster from "./pages/setup/AccountPeriodMaster";
+import UserCreationMaster from "./pages/setup/UserCreationMaster";
+import TransactionCode from "./pages/setup/TransactionCode";
+import WorkflowMaster from "./pages/setup/WorkflowMaster";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +44,10 @@ const App = () => (
                   <Route path="/setup" element={<WayToStart />} />
                   <Route path="/setup/company" element={<CompanySetup />} />
                   <Route path="/setup/company/master" element={<CompanyMaster />} />
+                  <Route path="/setup/company/account-period" element={<AccountPeriodMaster />} />
+                  <Route path="/setup/company/user-creation" element={<UserCreationMaster />} />
+                  <Route path="/setup/company/transaction-code" element={<TransactionCode />} />
+                  <Route path="/setup/company/workflow" element={<WorkflowMaster />} />
                   <Route path="/overview" element={<Overview />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="/transactions" element={<Transactions />} />

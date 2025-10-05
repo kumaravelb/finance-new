@@ -18,6 +18,7 @@ import ProductMaster from "./pages/master/ProductMaster";
 import VendorMaster from "./pages/master/VendorMaster";
 import NotFound from "./pages/NotFound";
 import WayToStart from "./pages/setup/WayToStart";
+import WayToStartApproach2 from "./pages/setup/WayToStartApproach2";
 import CompanySetup from "./pages/setup/CompanySetup";
 import CompanyMaster from "./pages/setup/CompanyMaster";
 import AccountPeriodMaster from "./pages/setup/AccountPeriodMaster";
@@ -42,6 +43,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<WayToStart />} />
                   <Route path="/setup" element={<WayToStart />} />
+                  <Route path="/setup/approach2" element={<WayToStartApproach2 />} />
                   <Route path="/setup/company" element={<CompanySetup />} />
                   <Route path="/setup/company/master" element={<CompanyMaster />} />
                   <Route path="/setup/company/account-period" element={<AccountPeriodMaster />} />

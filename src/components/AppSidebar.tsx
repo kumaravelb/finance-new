@@ -15,7 +15,9 @@ import {
   Users,
   Building2,
   Package,
-  Truck
+  Truck,
+  Layers,
+  LayoutGrid
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -38,7 +40,14 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const menuItems = [
-  { title: "Way to Start", url: "/setup", icon: LayoutDashboard },
+  { 
+    title: "Way to Start", 
+    icon: LayoutDashboard,
+    subItems: [
+      { title: "Approach 1", url: "/setup", icon: Layers },
+      { title: "Approach 2", url: "/setup/approach2", icon: LayoutGrid },
+    ]
+  },
   { title: "Overview", url: "/overview", icon: LayoutDashboard },
   { 
     title: "Analytics",

@@ -257,12 +257,12 @@ export default function WayToStartApproach2() {
       </div>
 
       {/* Top Widgets */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="flex gap-4 overflow-x-auto pb-2">
         {mainSetupItems.map((item) => (
           <Card
             key={item.id}
             className={cn(
-              "p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2",
+              "p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2 flex-shrink-0 w-64",
               selectedMain === item.id && "bg-primary text-primary-foreground border-primary shadow-lg"
             )}
             onClick={() => handleMainClick(item.id)}

@@ -257,21 +257,21 @@ export default function WayToStartApproach2() {
       </div>
 
       {/* Top Widgets */}
-      <div className="flex gap-4 overflow-x-auto pb-2">
+      <div className="grid grid-cols-6 gap-4">
         {mainSetupItems.map((item) => (
           <Card
             key={item.id}
             className={cn(
-              "p-6 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2 flex-shrink-0 w-64",
+              "p-4 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2",
               selectedMain === item.id && "bg-primary text-primary-foreground border-primary shadow-lg"
             )}
             onClick={() => handleMainClick(item.id)}
           >
-            <div className="flex items-start gap-4">
-              <item.icon className={cn("h-10 w-10", selectedMain === item.id && "text-primary-foreground")} />
-              <div className="flex-1">
-                <h3 className="font-semibold mb-1">{item.title}</h3>
-                <p className={cn("text-sm", selectedMain === item.id ? "text-primary-foreground/80" : "text-muted-foreground")}>
+            <div className="flex flex-col items-center gap-3 text-center">
+              <item.icon className={cn("h-8 w-8", selectedMain === item.id && "text-primary-foreground")} />
+              <div>
+                <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
+                <p className={cn("text-xs", selectedMain === item.id ? "text-primary-foreground/80" : "text-muted-foreground")}>
                   {item.description}
                 </p>
               </div>

@@ -30,16 +30,51 @@ export default function WayToStartApproach2() {
   const [selectedMain, setSelectedMain] = useState<string | null>(null);
   const [selectedStep, setSelectedStep] = useState<string | null>(null);
   const [currentFormStep, setCurrentFormStep] = useState(1);
-  const [formData, setFormData] = useState({
-    companyName: "",
-    companyCode: "",
-    registrationNumber: "",
-    taxId: "",
-    fiscalYearStart: "",
-    currency: "",
-    email: "",
-    phone: "",
-    address: "",
+  const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [showCompletion, setShowCompletion] = useState(false);
+  
+  const [companyData, setCompanyData] = useState({
+    companyName: "Acme Corporation",
+    companyCode: "ACME001",
+    registrationNumber: "REG-2024-001",
+    taxId: "TAX-123456",
+    fiscalYearStart: "2024-01-01",
+    currency: "USD",
+    email: "info@acme.com",
+    phone: "+1 234 567 8900",
+    address: "123 Business Street, New York, NY 10001",
+  });
+
+  const [accountPeriodData, setAccountPeriodData] = useState({
+    periodName: "FY 2024",
+    startDate: "2024-01-01",
+    endDate: "2024-12-31",
+    status: "active",
+  });
+
+  const [userCreationData, setUserCreationData] = useState({
+    username: "john.doe",
+    email: "john.doe@acme.com",
+    fullName: "John Doe",
+    role: "admin",
+    department: "Finance",
+    status: "active",
+  });
+
+  const [transactionCodeData, setTransactionCodeData] = useState({
+    code: "INV-001",
+    name: "Sales Invoice",
+    type: "invoice",
+    category: "revenue",
+    description: "Standard sales invoice transaction",
+    status: "active",
+  });
+
+  const [workflowData, setWorkflowData] = useState({
+    workflowName: "Invoice Approval",
+    module: "accounts-payable",
+    approvalSteps: "3",
+    status: "active",
   });
 
   const handleMainClick = (id: string) => {
@@ -54,74 +89,53 @@ export default function WayToStartApproach2() {
     setCurrentFormStep(1);
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleCompleteStep = () => {
+    if (!selectedStep) return;
+    
+    const newCompleted = [...completedSteps, selectedStep];
+    setCompletedSteps(newCompleted);
+    
+    const currentIndex = companySetupSteps.findIndex(s => s.id === selectedStep);
+    
+    if (currentIndex < companySetupSteps.length - 1) {
+      const nextStep = companySetupSteps[currentIndex + 1];
+      setSelectedStep(nextStep.id);
+      setCurrentFormStep(1);
+    } else {
+      setShowCompletion(true);
+    }
   };
 
-  const renderCompanyMasterForm = () => {
-    switch (currentFormStep) {
-      case 1:
+  const renderFormContent = () => {
+    switch (selectedStep) {
+      case "company-master":
         return (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name *</Label>
-                <Input
-                  id="companyName"
-                  value={formData.companyName}
-                  onChange={(e) => handleInputChange("companyName", e.target.value)}
-                  placeholder="Enter company name"
-                />
+                <Label>Company Name *</Label>
+                <Input value={companyData.companyName} onChange={(e) => setCompanyData({...companyData, companyName: e.target.value})} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="companyCode">Company Code *</Label>
-                <Input
-                  id="companyCode"
-                  value={formData.companyCode}
-                  onChange={(e) => handleInputChange("companyCode", e.target.value)}
-                  placeholder="Enter company code"
-                />
+                <Label>Company Code *</Label>
+                <Input value={companyData.companyCode} onChange={(e) => setCompanyData({...companyData, companyCode: e.target.value})} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="registrationNumber">Registration Number</Label>
-                <Input
-                  id="registrationNumber"
-                  value={formData.registrationNumber}
-                  onChange={(e) => handleInputChange("registrationNumber", e.target.value)}
-                  placeholder="Enter registration number"
-                />
+                <Label>Registration Number</Label>
+                <Input value={companyData.registrationNumber} onChange={(e) => setCompanyData({...companyData, registrationNumber: e.target.value})} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="taxId">Tax ID</Label>
-                <Input
-                  id="taxId"
-                  value={formData.taxId}
-                  onChange={(e) => handleInputChange("taxId", e.target.value)}
-                  placeholder="Enter tax ID"
-                />
-              </div>
-            </div>
-          </div>
-        );
-      case 2:
-        return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="fiscalYearStart">Fiscal Year Start</Label>
-                <Input
-                  id="fiscalYearStart"
-                  type="date"
-                  value={formData.fiscalYearStart}
-                  onChange={(e) => handleInputChange("fiscalYearStart", e.target.value)}
-                />
+                <Label>Tax ID</Label>
+                <Input value={companyData.taxId} onChange={(e) => setCompanyData({...companyData, taxId: e.target.value})} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="currency">Base Currency</Label>
-                <Select value={formData.currency} onValueChange={(value) => handleInputChange("currency", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select currency" />
-                  </SelectTrigger>
+                <Label>Fiscal Year Start</Label>
+                <Input type="date" value={companyData.fiscalYearStart} onChange={(e) => setCompanyData({...companyData, fiscalYearStart: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Base Currency</Label>
+                <Select value={companyData.currency} onValueChange={(value) => setCompanyData({...companyData, currency: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="USD">USD - US Dollar</SelectItem>
                     <SelectItem value="EUR">EUR - Euro</SelectItem>
@@ -130,105 +144,246 @@ export default function WayToStartApproach2() {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  placeholder="company@example.com"
-                />
+                <Label>Email Address</Label>
+                <Input type="email" value={companyData.email} onChange={(e) => setCompanyData({...companyData, email: e.target.value})} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  placeholder="+1 234 567 8900"
-                />
+                <Label>Phone Number</Label>
+                <Input value={companyData.phone} onChange={(e) => setCompanyData({...companyData, phone: e.target.value})} />
               </div>
               <div className="space-y-2 col-span-2">
-                <Label htmlFor="address">Address</Label>
-                <Textarea
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
-                  placeholder="Enter company address"
-                  rows={3}
-                />
+                <Label>Address</Label>
+                <Textarea value={companyData.address} onChange={(e) => setCompanyData({...companyData, address: e.target.value})} rows={3} />
               </div>
             </div>
           </div>
         );
-      case 4:
+      
+      case "account-period":
         return (
-          <div className="space-y-6">
-            <div className="text-center py-8">
-              <h3 className="text-lg font-semibold mb-2">Additional Settings</h3>
-              <p className="text-muted-foreground">Configure additional company preferences</p>
-            </div>
-          </div>
-        );
-      case 5:
-        return (
-          <div className="space-y-6">
-            <div className="text-center py-8">
-              <h3 className="text-lg font-semibold mb-2">Review & Submit</h3>
-              <p className="text-muted-foreground">Review your company configuration</p>
-              <div className="mt-6 p-4 bg-muted rounded-lg text-left">
-                <p><strong>Company:</strong> {formData.companyName || "Not set"}</p>
-                <p><strong>Code:</strong> {formData.companyCode || "Not set"}</p>
-                <p><strong>Currency:</strong> {formData.currency || "Not set"}</p>
-                <p><strong>Email:</strong> {formData.email || "Not set"}</p>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Period Name *</Label>
+                <Input value={accountPeriodData.periodName} onChange={(e) => setAccountPeriodData({...accountPeriodData, periodName: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select value={accountPeriodData.status} onValueChange={(value) => setAccountPeriodData({...accountPeriodData, status: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                    <SelectItem value="draft">Draft</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Start Date *</Label>
+                <Input type="date" value={accountPeriodData.startDate} onChange={(e) => setAccountPeriodData({...accountPeriodData, startDate: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>End Date *</Label>
+                <Input type="date" value={accountPeriodData.endDate} onChange={(e) => setAccountPeriodData({...accountPeriodData, endDate: e.target.value})} />
               </div>
             </div>
           </div>
         );
+      
+      case "user-creation":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Username *</Label>
+                <Input value={userCreationData.username} onChange={(e) => setUserCreationData({...userCreationData, username: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Email *</Label>
+                <Input type="email" value={userCreationData.email} onChange={(e) => setUserCreationData({...userCreationData, email: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Full Name *</Label>
+                <Input value={userCreationData.fullName} onChange={(e) => setUserCreationData({...userCreationData, fullName: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Role</Label>
+                <Select value={userCreationData.role} onValueChange={(value) => setUserCreationData({...userCreationData, role: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Department</Label>
+                <Input value={userCreationData.department} onChange={(e) => setUserCreationData({...userCreationData, department: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select value={userCreationData.status} onValueChange={(value) => setUserCreationData({...userCreationData, status: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        );
+      
+      case "transaction-code":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Transaction Code *</Label>
+                <Input value={transactionCodeData.code} onChange={(e) => setTransactionCodeData({...transactionCodeData, code: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Transaction Name *</Label>
+                <Input value={transactionCodeData.name} onChange={(e) => setTransactionCodeData({...transactionCodeData, name: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Type</Label>
+                <Select value={transactionCodeData.type} onValueChange={(value) => setTransactionCodeData({...transactionCodeData, type: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="invoice">Invoice</SelectItem>
+                    <SelectItem value="payment">Payment</SelectItem>
+                    <SelectItem value="receipt">Receipt</SelectItem>
+                    <SelectItem value="journal">Journal Entry</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Category</Label>
+                <Select value={transactionCodeData.category} onValueChange={(value) => setTransactionCodeData({...transactionCodeData, category: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="revenue">Revenue</SelectItem>
+                    <SelectItem value="expense">Expense</SelectItem>
+                    <SelectItem value="asset">Asset</SelectItem>
+                    <SelectItem value="liability">Liability</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2 col-span-2">
+                <Label>Description</Label>
+                <Textarea value={transactionCodeData.description} onChange={(e) => setTransactionCodeData({...transactionCodeData, description: e.target.value})} rows={3} />
+              </div>
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select value={transactionCodeData.status} onValueChange={(value) => setTransactionCodeData({...transactionCodeData, status: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        );
+      
+      case "workflow":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Workflow Name *</Label>
+                <Input value={workflowData.workflowName} onChange={(e) => setWorkflowData({...workflowData, workflowName: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Module</Label>
+                <Select value={workflowData.module} onValueChange={(value) => setWorkflowData({...workflowData, module: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="accounts-payable">Accounts Payable</SelectItem>
+                    <SelectItem value="accounts-receivable">Accounts Receivable</SelectItem>
+                    <SelectItem value="general-ledger">General Ledger</SelectItem>
+                    <SelectItem value="purchase-order">Purchase Order</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Approval Steps</Label>
+                <Input value={workflowData.approvalSteps} onChange={(e) => setWorkflowData({...workflowData, approvalSteps: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select value={workflowData.status} onValueChange={(value) => setWorkflowData({...workflowData, status: value})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                    <SelectItem value="draft">Draft</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        );
+      
       default:
         return null;
     }
   };
 
   const renderContent = () => {
-    if (selectedStep === "company-master") {
+    if (showCompletion) {
+      return (
+        <div className="flex items-center justify-center min-h-[500px]">
+          <Card className="p-12 max-w-2xl text-center bg-gradient-to-br from-primary/10 via-primary/5 to-background border-2 border-primary/20">
+            <div className="space-y-6">
+              <div className="text-6xl">🎉</div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Hurray! Finance Setup is Completed
+              </h1>
+              <p className="text-xl text-muted-foreground">
+                Feel the power of streamlined finance experience...
+              </p>
+              <p className="text-lg">
+                Your company is now fully configured and ready to start managing financial operations.
+              </p>
+              <div className="flex gap-4 justify-center pt-4">
+                <Button size="lg" onClick={() => window.location.href = '/'}>
+                  Go to Dashboard
+                </Button>
+                <Button size="lg" variant="outline" onClick={() => {
+                  setShowCompletion(false);
+                  setCompletedSteps([]);
+                  setSelectedStep("company-master");
+                }}>
+                  Start Over
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      );
+    }
+
+    if (selectedStep) {
+      const currentStepInfo = companySetupSteps.find(s => s.id === selectedStep);
+      
       return (
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold">Company Master</h2>
-            <p className="text-muted-foreground mt-1">Configure company details and settings</p>
+            <h2 className="text-2xl font-bold">{currentStepInfo?.title}</h2>
+            <p className="text-muted-foreground mt-1">Configure {currentStepInfo?.title.toLowerCase()} settings</p>
           </div>
 
-          <SetupStepper
-            currentStep={currentFormStep}
-            totalSteps={5}
-            onStepClick={setCurrentFormStep}
-          />
-
           <Card className="p-6">
-            {renderCompanyMasterForm()}
+            {renderFormContent()}
 
-            <div className="flex justify-between mt-6 pt-6 border-t">
-              <Button
-                variant="outline"
-                onClick={() => setCurrentFormStep(Math.max(1, currentFormStep - 1))}
-                disabled={currentFormStep === 1}
-              >
-                Previous
-              </Button>
-              <Button
-                onClick={() => setCurrentFormStep(Math.min(5, currentFormStep + 1))}
-                disabled={currentFormStep === 5}
-              >
-                {currentFormStep === 5 ? "Submit" : "Next"}
+            <div className="flex justify-end mt-6 pt-6 border-t">
+              <Button onClick={handleCompleteStep}>
+                Complete & Next
               </Button>
             </div>
           </Card>
@@ -316,14 +471,22 @@ export default function WayToStartApproach2() {
               <Card
                 key={step.id}
                 className={cn(
-                  "p-4 cursor-pointer transition-all hover:shadow-md border-2",
-                  selectedStep === step.id && "bg-primary text-primary-foreground border-primary shadow-lg"
+                  "p-4 cursor-pointer transition-all hover:shadow-md border-2 relative",
+                  selectedStep === step.id && "bg-primary text-primary-foreground border-primary shadow-lg",
+                  completedSteps.includes(step.id) && selectedStep !== step.id && "bg-green-50 dark:bg-green-950 border-green-500"
                 )}
                 onClick={() => handleStepClick(step.id)}
               >
                 <div className="flex items-center gap-3">
-                  <step.icon className={cn("h-6 w-6 flex-shrink-0", selectedStep === step.id && "text-primary-foreground")} />
+                  <step.icon className={cn(
+                    "h-6 w-6 flex-shrink-0",
+                    selectedStep === step.id && "text-primary-foreground",
+                    completedSteps.includes(step.id) && selectedStep !== step.id && "text-green-600 dark:text-green-400"
+                  )} />
                   <span className="text-sm font-medium">{step.title}</span>
+                  {completedSteps.includes(step.id) && (
+                    <span className="ml-auto text-green-600 dark:text-green-400">✓</span>
+                  )}
                 </div>
               </Card>
             ))}

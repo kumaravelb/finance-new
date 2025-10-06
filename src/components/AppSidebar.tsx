@@ -1,8 +1,8 @@
-import { 
-  LayoutDashboard, 
-  TrendingUp, 
-  CreditCard, 
-  Settings, 
+import {
+  LayoutDashboard,
+  TrendingUp,
+  CreditCard,
+  Settings,
   Wallet,
   ChevronDown,
   PieChart,
@@ -17,7 +17,10 @@ import {
   Package,
   Truck,
   Layers,
-  LayoutGrid
+  LayoutGrid,
+  ClipboardList,
+  Calendar,
+  Activity
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -67,14 +70,23 @@ const menuItems = [
       { title: "Expenses", url: "/transactions", icon: ArrowUpDown },
     ]
   },
-  { 
-    title: "Master Setup", 
+  {
+    title: "Master Setup",
     icon: Database,
     subItems: [
       { title: "Customer Master", url: "/master/customers", icon: Users },
       { title: "Account Master", url: "/master/accounts", icon: Building2 },
       { title: "Product Master", url: "/master/products", icon: Package },
       { title: "Vendor Master", url: "/master/vendors", icon: Truck },
+    ]
+  },
+  {
+    title: "UPR Management",
+    icon: ClipboardList,
+    subItems: [
+      { title: "UPR Dashboard", url: "/upr/dashboard", icon: Activity },
+      { title: "UPR Dashboard - Approach 2", url: "/upr/dashboard-approach2", icon: LayoutGrid },
+      { title: "Scheduler", url: "/upr/scheduler", icon: Calendar },
     ]
   },
   { title: "Wallet", url: "/wallet", icon: Wallet },

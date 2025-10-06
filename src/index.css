@@ -189,6 +189,50 @@ All colors MUST be HSL.
     --sidebar-primary: 346 77% 60%;
     --sidebar-ring: 346 77% 60%;
   }
+
+  /* Maroon Theme */
+  .theme-maroon {
+    --primary: 0 63% 31%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 0 63% 31%;
+    --accent-foreground: 0 0% 100%;
+    --ring: 0 63% 31%;
+    --sidebar-primary: 0 63% 31%;
+    --sidebar-ring: 0 63% 31%;
+    --chart-1: 0 63% 31%;
+    --chart-2: 217 91% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 63% 31%) 0%, hsl(0 63% 21%) 100%);
+  }
+
+  .theme-maroon.dark {
+    --primary: 0 63% 45%;
+    --accent: 0 63% 45%;
+    --ring: 0 63% 45%;
+    --sidebar-primary: 0 63% 45%;
+    --sidebar-ring: 0 63% 45%;
+  }
+
+  /* Yellow Theme */
+  .theme-yellow {
+    --primary: 45 93% 47%;
+    --primary-foreground: 0 0% 0%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 0 0% 0%;
+    --ring: 45 93% 47%;
+    --sidebar-primary: 45 93% 47%;
+    --sidebar-ring: 45 93% 47%;
+    --chart-1: 45 93% 47%;
+    --chart-2: 217 91% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(45 93% 37%) 100%);
+  }
+
+  .theme-yellow.dark {
+    --primary: 45 93% 57%;
+    --accent: 45 93% 57%;
+    --ring: 45 93% 57%;
+    --sidebar-primary: 45 93% 57%;
+    --sidebar-ring: 45 93% 57%;
+  }
 }
 
 @layer base {

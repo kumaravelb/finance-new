@@ -25,6 +25,9 @@ import AccountPeriodMaster from "./pages/setup/AccountPeriodMaster";
 import UserCreationMaster from "./pages/setup/UserCreationMaster";
 import TransactionCode from "./pages/setup/TransactionCode";
 import WorkflowMaster from "./pages/setup/WorkflowMaster";
+import UPRDashboard from "./pages/upr/UPRDashboard";
+import UPRDashboardApproach2 from "./pages/upr/UPRDashboardApproach2";
+import UPRScheduler from "./pages/upr/UPRScheduler";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +60,9 @@ const App = () => (
                   <Route path="/master/accounts" element={<AccountMaster />} />
                   <Route path="/master/products" element={<ProductMaster />} />
                   <Route path="/master/vendors" element={<VendorMaster />} />
+                  <Route path="/upr/dashboard" element={<UPRDashboard />} />
+                  <Route path="/upr/dashboard-approach2" element={<UPRDashboardApproach2 />} />
+                  <Route path="/upr/scheduler" element={<UPRScheduler />} />
                   <Route path="/wallet" element={<Wallet />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<NotFound />} />

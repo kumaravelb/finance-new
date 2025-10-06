@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
 
-type ColorTheme = "blue" | "green" | "purple" | "orange" | "rose";
+type ColorTheme = "blue" | "green" | "purple" | "orange" | "rose" | "maroon" | "yellow";
 
 const themes = [
   { value: "blue", label: "Blue", color: "hsl(217 91% 60%)" },
@@ -18,6 +18,8 @@ const themes = [
   { value: "purple", label: "Purple", color: "hsl(262 83% 58%)" },
   { value: "orange", label: "Orange", color: "hsl(24 94% 50%)" },
   { value: "rose", label: "Rose", color: "hsl(346 77% 50%)" },
+  { value: "maroon", label: "Maroon", color: "hsl(0 63% 31%)" },
+  { value: "yellow", label: "Yellow", color: "hsl(45 93% 47%)" },
 ] as const;
 
 export function ColorThemeSelector() {
@@ -33,10 +35,10 @@ export function ColorThemeSelector() {
 
   const applyTheme = (theme: ColorTheme) => {
     const root = document.documentElement;
-    
+
     // Remove all theme classes
-    root.classList.remove("theme-green", "theme-purple", "theme-orange", "theme-rose");
-    
+    root.classList.remove("theme-green", "theme-purple", "theme-orange", "theme-rose", "theme-maroon", "theme-yellow");
+
     // Add new theme class (blue is default, no class needed)
     if (theme !== "blue") {
       root.classList.add(`theme-${theme}`);

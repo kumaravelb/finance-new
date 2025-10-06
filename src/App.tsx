@@ -44,7 +44,7 @@ const App = () => (
               <Header />
               <main className="flex-1 p-6">
                 <Routes>
-                  <Route path="/" element={<WayToStart />} />
+                  <Route path="/" element={<Overview />} />
                   <Route path="/setup" element={<WayToStart />} />
                   <Route path="/setup/approach2" element={<WayToStartApproach2 />} />
                   <Route path="/setup/company" element={<CompanySetup />} />

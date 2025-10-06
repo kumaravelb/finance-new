@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Building2, Network, Users, DollarSign, ShieldCheck, Package, Code, Calendar, UserPlus, ArrowLeftRight, Workflow } from "lucide-react";
+import { Building2, Network, Users, DollarSign, ShieldCheck, Package, Code, Calendar, UserPlus, ArrowLeftRight, Workflow, Box, FolderTree, Landmark, FileText, Wallet, Settings, UserCog, TrendingUp, BadgeDollarSign, Banknote, RefreshCw, IdCard, AlertTriangle, FileCode, SettingsIcon, FileSpreadsheet, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SetupStepper } from "@/components/SetupStepper";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 
 const mainSetupItems = [
   { id: "company", icon: Building2, title: "Company Set up", description: "Configure company details and settings" },
@@ -26,11 +27,45 @@ const companySetupSteps = [
   { id: "workflow", icon: Workflow, title: "Workflow Master" },
 ];
 
+const accountsSetupSteps = [
+  { id: "account-group", icon: Box, title: "Account Group" },
+  { id: "account-category", icon: FolderTree, title: "Account Category" },
+  { id: "account-master", icon: Landmark, title: "Account Master" },
+  { id: "asset-category", icon: FileText, title: "Asset Category" },
+  { id: "bank-masters", icon: Wallet, title: "Bank Masters" },
+  { id: "opening-bal-setup", icon: Settings, title: "Opening Bal Set up" },
+];
+
+const customersSetupSteps = [
+  { id: "customer-group-master", icon: UserCog, title: "Customer Group Master" },
+  { id: "customer-category-master", icon: TrendingUp, title: "Customer Category Master" },
+  { id: "customer-master", icon: Users, title: "Customer Master" },
+  { id: "insured-master", icon: BadgeDollarSign, title: "Insured Master" },
+];
+
+const currencySetupSteps = [
+  { id: "currency", icon: Banknote, title: "Currency" },
+  { id: "exchange-rates", icon: RefreshCw, title: "Exchange Rates" },
+];
+
+const riskSetupSteps = [
+  { id: "civil-id-master", icon: IdCard, title: "Civil ID Master" },
+  { id: "customer-risk-profile-master", icon: AlertTriangle, title: "Customer Risk Profile Master" },
+];
+
+const mastersSetupSteps = [
+  { id: "application-codes", icon: FileCode, title: "Application Codes" },
+  { id: "application-para", icon: SettingsIcon, title: "Application Para" },
+  { id: "report-headings", icon: FileSpreadsheet, title: "Report headings" },
+  { id: "recuring-jvs", icon: RotateCcw, title: "Recuring JVs" },
+];
+
 export default function WayToStartApproach2() {
   const [selectedMain, setSelectedMain] = useState<string | null>(null);
   const [selectedStep, setSelectedStep] = useState<string | null>(null);
   const [currentFormStep, setCurrentFormStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [completedMainModules, setCompletedMainModules] = useState<string[]>([]);
   const [showCompletion, setShowCompletion] = useState(false);
   
   const [companyData, setCompanyData] = useState({
@@ -77,10 +112,41 @@ export default function WayToStartApproach2() {
     status: "active",
   });
 
+  // Get current steps based on selected main module
+  const getCurrentSteps = () => {
+    switch (selectedMain) {
+      case "company":
+        return companySetupSteps;
+      case "accounts":
+        return accountsSetupSteps;
+      case "customers":
+        return customersSetupSteps;
+      case "currency":
+        return currencySetupSteps;
+      case "risk":
+        return riskSetupSteps;
+      case "masters":
+        return mastersSetupSteps;
+      default:
+        return companySetupSteps;
+    }
+  };
+
   const handleMainClick = (id: string) => {
     setSelectedMain(id);
+    setCompletedSteps([]); // Reset completed steps when switching modules
     if (id === "company") {
       setSelectedStep("company-master");
+    } else if (id === "accounts") {
+      setSelectedStep("account-group");
+    } else if (id === "customers") {
+      setSelectedStep("customer-group-master");
+    } else if (id === "currency") {
+      setSelectedStep("currency");
+    } else if (id === "risk") {
+      setSelectedStep("civil-id-master");
+    } else if (id === "masters") {
+      setSelectedStep("application-codes");
     }
   };
 
@@ -91,18 +157,63 @@ export default function WayToStartApproach2() {
 
   const handleCompleteStep = () => {
     if (!selectedStep) return;
-    
+
     const newCompleted = [...completedSteps, selectedStep];
     setCompletedSteps(newCompleted);
-    
-    const currentIndex = companySetupSteps.findIndex(s => s.id === selectedStep);
-    
-    if (currentIndex < companySetupSteps.length - 1) {
-      const nextStep = companySetupSteps[currentIndex + 1];
+
+    const currentSteps = getCurrentSteps();
+    const currentIndex = currentSteps.findIndex(s => s.id === selectedStep);
+
+    if (currentIndex < currentSteps.length - 1) {
+      // Move to next sub-step within current module
+      const nextStep = currentSteps[currentIndex + 1];
       setSelectedStep(nextStep.id);
       setCurrentFormStep(1);
     } else {
-      setShowCompletion(true);
+      // All sub-steps completed, mark current main module as completed
+      const newCompletedMainModules = selectedMain && !completedMainModules.includes(selectedMain)
+        ? [...completedMainModules, selectedMain]
+        : completedMainModules;
+
+      setCompletedMainModules(newCompletedMainModules);
+
+      // Check if all main modules are completed
+      if (newCompletedMainModules.length >= mainSetupItems.length) {
+        setShowCompletion(true);
+        setSelectedMain(null);
+        setSelectedStep(null);
+      } else {
+        // Move to next main module automatically
+        const currentMainIndex = mainSetupItems.findIndex(m => m.id === selectedMain);
+        if (currentMainIndex < mainSetupItems.length - 1) {
+          const nextMainModule = mainSetupItems[currentMainIndex + 1];
+          setSelectedMain(nextMainModule.id);
+          setCompletedSteps([]); // Reset completed steps for new module
+
+          // Set first step of next module
+          switch (nextMainModule.id) {
+            case "company":
+              setSelectedStep("company-master");
+              break;
+            case "accounts":
+              setSelectedStep("account-group");
+              break;
+            case "customers":
+              setSelectedStep("customer-group-master");
+              break;
+            case "currency":
+              setSelectedStep("currency");
+              break;
+            case "risk":
+              setSelectedStep("civil-id-master");
+              break;
+            case "masters":
+              setSelectedStep("application-codes");
+              break;
+          }
+          setCurrentFormStep(1);
+        }
+      }
     }
   };
 
@@ -401,6 +512,36 @@ export default function WayToStartApproach2() {
     );
   };
 
+  // Define color for each main module
+  const moduleColors = [
+    "hsl(217 91% 60%)",  // blue - Company
+    "hsl(142 76% 36%)",  // green - Accounts
+    "hsl(262 83% 58%)",  // purple - Customers
+    "hsl(24 94% 50%)",   // orange - Currency
+    "hsl(346 77% 50%)",  // rose - Risk
+    "hsl(340 82% 42%)",  // maroon - Masters
+  ];
+
+  // Calculate granular progress including sub-steps
+  // Each module = 16.67% (100/6), each sub-step varies based on module's step count
+  const modulePercentage = 100 / mainSetupItems.length; // ~16.67%
+
+  // Get substep percentage for current module
+  const getCurrentSubStepPercentage = () => {
+    const currentSteps = getCurrentSteps();
+    return modulePercentage / currentSteps.length;
+  };
+
+  // Calculate current progress:
+  // - Completed modules: completedMainModules.length * 16.67%
+  // - Current module sub-steps: completedSteps.length * (16.67% / num_steps_in_module)
+  const completedModulesProgress = completedMainModules.length * modulePercentage;
+  const currentModuleSubStepsProgress = selectedMain && !completedMainModules.includes(selectedMain)
+    ? completedSteps.length * getCurrentSubStepPercentage()
+    : 0;
+
+  const financeProgressPercentage = completedModulesProgress + currentModuleSubStepsProgress;
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -411,22 +552,106 @@ export default function WayToStartApproach2() {
         </p>
       </div>
 
+      {/* Finance Setup Progress Bar */}
+      <Card className="p-6 border-2">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">Finance Setup Progress</h3>
+              <p className="text-sm text-muted-foreground">
+                {completedMainModules.length} of {mainSetupItems.length} modules completed
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-bold text-primary">{Math.round(financeProgressPercentage)}%</div>
+              <p className="text-xs text-muted-foreground">Complete</p>
+            </div>
+          </div>
+
+          {/* Segmented Progress Bar */}
+          <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex">
+            {mainSetupItems.map((item, index) => {
+              const isCompleted = completedMainModules.includes(item.id);
+              const isCurrentModule = selectedMain === item.id;
+
+              // Calculate fill percentage for this segment
+              let segmentFill = 0;
+              if (isCompleted) {
+                segmentFill = 100;
+              } else if (isCurrentModule) {
+                // Calculate percentage within this module (0-100%)
+                const currentSteps = getCurrentSteps();
+                const moduleCompletionPercentage = (completedSteps.length / currentSteps.length) * 100;
+                segmentFill = moduleCompletionPercentage;
+              }
+
+              return (
+                <div
+                  key={item.id}
+                  className="relative"
+                  style={{ width: `${modulePercentage}%` }}
+                >
+                  <div
+                    className="h-3 transition-all duration-500"
+                    style={{
+                      width: `${segmentFill}%`,
+                      backgroundColor: moduleColors[index]
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-between text-xs text-muted-foreground">
+            {mainSetupItems.map((item, index) => (
+              <div key={item.id} className="flex flex-col items-center gap-1" style={{ width: `${modulePercentage}%` }}>
+                <div className={cn(
+                  "w-3 h-3 rounded-full border-2"
+                )}
+                style={{
+                  backgroundColor: completedMainModules.includes(item.id) ? moduleColors[index] : 'transparent',
+                  borderColor: moduleColors[index]
+                }} />
+                <span className="text-center text-xs">{Math.round((index + 1) * modulePercentage)}%</span>
+                <span className="text-center text-[10px] leading-tight">{item.title.split(' ')[0]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+
       {/* Top Widgets */}
       <div className="grid grid-cols-6 gap-4">
         {mainSetupItems.map((item) => (
           <Card
             key={item.id}
             className={cn(
-              "p-4 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2",
-              selectedMain === item.id && "bg-primary text-primary-foreground border-primary shadow-lg"
+              "p-4 cursor-pointer transition-all hover:shadow-lg hover:scale-105 border-2 relative",
+              selectedMain === item.id && "bg-primary text-primary-foreground border-primary shadow-lg",
+              completedMainModules.includes(item.id) && selectedMain !== item.id && "bg-primary/10 dark:bg-primary/20 border-primary"
             )}
             onClick={() => handleMainClick(item.id)}
           >
+            {completedMainModules.includes(item.id) && (
+              <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                ✓
+              </div>
+            )}
             <div className="flex flex-col items-center gap-3 text-center">
-              <item.icon className={cn("h-8 w-8", selectedMain === item.id && "text-primary-foreground")} />
+              <item.icon className={cn(
+                "h-8 w-8",
+                selectedMain === item.id && "text-primary-foreground",
+                completedMainModules.includes(item.id) && selectedMain !== item.id && "text-primary"
+              )} />
               <div>
                 <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
-                <p className={cn("text-xs", selectedMain === item.id ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                <p className={cn(
+                  "text-xs",
+                  selectedMain === item.id ? "text-primary-foreground/80" :
+                  completedMainModules.includes(item.id) ? "text-primary/80" :
+                  "text-muted-foreground"
+                )}>
                   {item.description}
                 </p>
               </div>
@@ -435,13 +660,13 @@ export default function WayToStartApproach2() {
         ))}
       </div>
 
-      {/* Information Section */}
-      {!selectedMain && (
+      {/* Information Section or Completion Message */}
+      {!selectedMain && !showCompletion && (
         <Card className="p-8 bg-gradient-to-br from-primary/5 to-primary/10">
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold mb-3">Welcome to Company Setup</h2>
             <p className="text-muted-foreground mb-4">
-              Follow these guided steps to configure your company. Each section contains detailed forms 
+              Follow these guided steps to configure your company. Each section contains detailed forms
               and settings to help you get started quickly and efficiently.
             </p>
             <div className="grid grid-cols-3 gap-4 mt-6">
@@ -462,18 +687,50 @@ export default function WayToStartApproach2() {
         </Card>
       )}
 
+      {/* Completion Message */}
+      {showCompletion && (
+        <Card className="p-12 text-center bg-gradient-to-br from-primary/10 via-primary/5 to-background border-2 border-primary/20">
+          <div className="space-y-6">
+            <div className="text-6xl">🎉</div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Hurray! Finance Setup is Completed
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              Feel the power of streamlined finance experience...
+            </p>
+            <p className="text-lg">
+              Your company is now fully configured and ready to start managing financial operations.
+            </p>
+            <div className="flex gap-4 justify-center pt-4">
+              <Button size="lg" onClick={() => window.location.href = '/'}>
+                Go to Dashboard
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => {
+                setShowCompletion(false);
+                setCompletedSteps([]);
+                setCompletedMainModules([]);
+                setSelectedMain("company");
+                setSelectedStep("company-master");
+              }}>
+                Start Over
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Split View: Vertical Widgets + Content */}
       {selectedMain && (
         <div className="flex gap-6">
           {/* Left Sidebar - Vertical Widgets (20%) */}
           <div className="w-1/5 space-y-3">
-            {companySetupSteps.map((step) => (
+            {getCurrentSteps().map((step) => (
               <Card
                 key={step.id}
                 className={cn(
                   "p-4 cursor-pointer transition-all hover:shadow-md border-2 relative",
                   selectedStep === step.id && "bg-primary text-primary-foreground border-primary shadow-lg",
-                  completedSteps.includes(step.id) && selectedStep !== step.id && "bg-green-50 dark:bg-green-950 border-green-500"
+                  completedSteps.includes(step.id) && selectedStep !== step.id && "bg-primary/10 dark:bg-primary/20 border-primary"
                 )}
                 onClick={() => handleStepClick(step.id)}
               >
@@ -481,11 +738,11 @@ export default function WayToStartApproach2() {
                   <step.icon className={cn(
                     "h-6 w-6 flex-shrink-0",
                     selectedStep === step.id && "text-primary-foreground",
-                    completedSteps.includes(step.id) && selectedStep !== step.id && "text-green-600 dark:text-green-400"
+                    completedSteps.includes(step.id) && selectedStep !== step.id && "text-primary"
                   )} />
                   <span className="text-sm font-medium">{step.title}</span>
                   {completedSteps.includes(step.id) && (
-                    <span className="ml-auto text-green-600 dark:text-green-400">✓</span>
+                    <span className="ml-auto text-primary">✓</span>
                   )}
                 </div>
               </Card>

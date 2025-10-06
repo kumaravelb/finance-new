@@ -192,24 +192,24 @@ All colors MUST be HSL.
 
   /* Maroon Theme */
   .theme-maroon {
-    --primary: 0 63% 31%;
+    --primary: 340 82% 42%;
     --primary-foreground: 0 0% 100%;
-    --accent: 0 63% 31%;
+    --accent: 340 82% 42%;
     --accent-foreground: 0 0% 100%;
-    --ring: 0 63% 31%;
-    --sidebar-primary: 0 63% 31%;
-    --sidebar-ring: 0 63% 31%;
-    --chart-1: 0 63% 31%;
+    --ring: 340 82% 42%;
+    --sidebar-primary: 340 82% 42%;
+    --sidebar-ring: 340 82% 42%;
+    --chart-1: 340 82% 42%;
     --chart-2: 217 91% 60%;
-    --gradient-primary: linear-gradient(135deg, hsl(0 63% 31%) 0%, hsl(0 63% 21%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(340 82% 42%) 0%, hsl(340 82% 32%) 100%);
   }
 
   .theme-maroon.dark {
-    --primary: 0 63% 45%;
-    --accent: 0 63% 45%;
-    --ring: 0 63% 45%;
-    --sidebar-primary: 0 63% 45%;
-    --sidebar-ring: 0 63% 45%;
+    --primary: 340 82% 52%;
+    --accent: 340 82% 52%;
+    --ring: 340 82% 52%;
+    --sidebar-primary: 340 82% 52%;
+    --sidebar-ring: 340 82% 52%;
   }
 
   /* Yellow Theme */

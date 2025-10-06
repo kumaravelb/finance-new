@@ -43,16 +43,16 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const menuItems = [
-  { 
-    title: "Way to Start", 
+  { title: "Overview", url: "/overview", icon: LayoutDashboard },
+  {
+    title: "Way to Start",
     icon: LayoutDashboard,
     subItems: [
       { title: "Approach 1", url: "/setup", icon: Layers },
       { title: "Approach 2", url: "/setup/approach2", icon: LayoutGrid },
     ]
   },
-  { title: "Overview", url: "/overview", icon: LayoutDashboard },
-  { 
+  {
     title: "Analytics",
     icon: TrendingUp,
     subItems: [
@@ -95,11 +95,11 @@ const menuItems = [
 
 export function AppSidebar() {
   const { open } = useSidebar();
-  const [openMenus, setOpenMenus] = useState<string[]>(["Analytics"]);
+  const [openMenus, setOpenMenus] = useState<string[]>([]);
 
   const toggleMenu = (title: string) => {
     setOpenMenus((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+      prev.includes(title) ? [] : [title]
     );
   };
 
@@ -107,11 +107,15 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <div className="px-3 py-4 mb-2">
+          <div className="py-4 mb-2">
             {open ? (
-              <img src={logoFull} alt="ANOUD TECHNOLOGIES" className="w-full h-auto" />
+              <div className="px-4">
+                <img src={logoFull} alt="ANOUD TECHNOLOGIES" className="w-32 h-auto object-contain" />
+              </div>
             ) : (
-              <img src={logoIcon} alt="ANOUD" className="w-8 h-8 mx-auto" />
+              <div className="flex items-center justify-center">
+                <img src={logoIcon} alt="ANOUD" className="w-10 h-10 object-contain" />
+              </div>
             )}
           </div>
           <SidebarGroupLabel className="text-sm font-semibold text-primary">
@@ -137,7 +141,7 @@ export function AppSidebar() {
                             className="hover:bg-sidebar-accent/50"
                             tooltip={item.title}
                           >
-                            <item.icon className="h-4 w-4" />
+                            <item.icon className={open ? "h-5 w-5" : "h-6 w-6"} />
                             {open && (
                               <>
                                 <span>{item.title}</span>
@@ -188,7 +192,7 @@ export function AppSidebar() {
                             : "hover:bg-sidebar-accent/50"
                         }
                       >
-                        <item.icon className="h-4 w-4" />
+                        <item.icon className={open ? "h-5 w-5" : "h-6 w-6"} />
                         {open && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>

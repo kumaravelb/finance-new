@@ -23,7 +23,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="rounded-full">
-            <Bell className="h-5 w-5" />
+            <Bell className="h-4 w-4" />
           </Button>
           <ColorThemeSelector />
           <ThemeToggle />

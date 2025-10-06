@@ -20,7 +20,8 @@ import {
   LayoutGrid,
   ClipboardList,
   Calendar,
-  Activity
+  Activity,
+  Rocket
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -46,7 +47,7 @@ const menuItems = [
   { title: "Overview", url: "/overview", icon: LayoutDashboard },
   {
     title: "Way to Start",
-    icon: LayoutDashboard,
+    icon: Rocket,
     subItems: [
       { title: "Approach 1", url: "/setup", icon: Layers },
       { title: "Approach 2", url: "/setup/approach2", icon: LayoutGrid },

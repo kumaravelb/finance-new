@@ -23,13 +23,15 @@ const themes = [
 ] as const;
 
 export function ColorThemeSelector() {
-  const [colorTheme, setColorTheme] = useState<ColorTheme>("blue");
+  const [colorTheme, setColorTheme] = useState<ColorTheme>("maroon");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("color-theme") as ColorTheme;
     if (savedTheme) {
       setColorTheme(savedTheme);
       applyTheme(savedTheme);
+    } else {
+      applyTheme("maroon");
     }
   }, []);
 

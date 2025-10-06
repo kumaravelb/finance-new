@@ -18,7 +18,7 @@ const themes = [
   { value: "purple", label: "Purple", color: "hsl(262 83% 58%)" },
   { value: "orange", label: "Orange", color: "hsl(24 94% 50%)" },
   { value: "rose", label: "Rose", color: "hsl(346 77% 50%)" },
-  { value: "maroon", label: "Maroon", color: "hsl(0 63% 31%)" },
+  { value: "maroon", label: "Maroon", color: "hsl(340 82% 42%)" },
   { value: "yellow", label: "Yellow", color: "hsl(45 93% 47%)" },
 ] as const;
 
